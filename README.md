@@ -1,7 +1,6 @@
 # swag
 
 
-
 | makeresults 
 | eval startTime=strptime("2023-05-24 00:00:00", "%Y-%m-%d %H:%M:%S")
 | eval endTime=strptime("2023-05-24 23:59:59", "%Y-%m-%d %H:%M:%S")
