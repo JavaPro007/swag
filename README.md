@@ -1,15 +1,23 @@
-| makeresults 
-| eval startTime=strptime("2023-05-24 00:00:00", "%Y-%m-%d %H:%M:%S")
-| eval endTime=strptime("2023-05-24 23:59:59", "%Y-%m-%d %H:%M:%S")
-| foreach [eval hour=startTime; hour<=endTime; hour+=3600] 
-    [ search index=apigee RequestVerb=POST earliest=@hour+3600 latest=@hour+7200 
-    | stats count by UserIP 
-    | sort -count 
-    | head 10
-    | eval hour=strftime(hour, "%Y-%m-%d %H:%M:%S")
-    | eval report="Hour: " . hour . "\n" . "Top 10 User IPs:\n" . "UserIP: " . UserIP . ", Count: " . count
-    | fields report
-    | appendpipe [ stats count ]
-    | eval _time=hour
-    | fields - hour ]
-| table _time, count
+const searchString = "/v1/visicaptcha";
+let foundKey = null;
+
+for (let i = 0; i < jsonArr.length; i++) {
+  const obj = jsonArr[i];
+  if (obj.paths.includes(searchString)) {
+    if (obj.key !== "default") {
+      let otherKeyPresent = false;
+      for (let j = 0; j < jsonArr.length; j++) {
+        if (j !== i && jsonArr[j].paths.includes(searchString)) {
+          otherKeyPresent = true;
+          break;
+        }
+      }
+      if (otherKeyPresent) {
+        foundKey = obj.key;
+        break;
+      }
+    } else {
+      foundKey = obj.key;
+    }
+  }
+}
