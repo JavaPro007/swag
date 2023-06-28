@@ -29,7 +29,7 @@ let foundKey = null;
 
 for (let i = 0; i < jsonArr.length; i++) {
   const obj = jsonArr[i];
-  const pathsArray = obj.paths; // Assign the paths array directly
+  const pathsArray = obj.paths;
 
   let searchStringFound = false;
   for (let j = 0; j < pathsArray.length; j++) {
@@ -45,7 +45,14 @@ for (let i = 0; i < jsonArr.length; i++) {
       for (let k = 0; k < jsonArr.length; k++) {
         if (k !== i) {
           const otherPathsArray = jsonArr[k].paths;
-          if (otherPathsArray.includes(searchString)) {
+          let otherPathsContainSearchString = false;
+          for (let m = 0; m < otherPathsArray.length; m++) {
+            if (otherPathsArray[m] === searchString) {
+              otherPathsContainSearchString = true;
+              break;
+            }
+          }
+          if (otherPathsContainSearchString) {
             otherKeyPresent = true;
             break;
           }
